@@ -19,7 +19,7 @@ func main() {
 
 func whoAmI(response http.ResponseWriter, r *http.Request) {
 	who := []whoami{
-		whoami{Name: "Efrei Paris",
+		whoami{Name: "Aboubakar mohamed abdoulaye",
 			Title: "DevOps and Continous Deployment",
 			State: "FR",
 		},
@@ -27,7 +27,7 @@ func whoAmI(response http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(response).Encode(who)
 
-	fmt.Println("Endpoint Hit", who)
+	fmt.Println("Endpoint Hit: /whoami")
 }
 
 func homePage(response http.ResponseWriter, r *http.Request) {
@@ -36,16 +36,23 @@ func homePage(response http.ResponseWriter, r *http.Request) {
 }
 
 func aboutMe(response http.ResponseWriter, r *http.Request) {
-	who := "EfreiParis"
+	who := "Aboubakar mohamed abdoulaye"
 
 	fmt.Fprintf(response, "A little bit about me...")
 	fmt.Println("Endpoint Hit: ", who)
+}
+
+func healthCheck(response http.ResponseWriter, r *http.Request) {
+    response.WriteHeader(http.StatusOK) // Renvoie un code HTTP 200
+    fmt.Fprintf(response, "OK")        // Message simple pour indiquer que tout va bien
+    fmt.Println("Endpoint Hit: /health")
 }
 
 func request1() {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/aboutme", aboutMe)
 	http.HandleFunc("/whoami", whoAmI)
-
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	http.HandleFunc("/health", healthCheck)
+	
+	log.Fatal(http.ListenAndServe(":8085", nil))
 }
